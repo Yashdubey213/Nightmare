@@ -56,13 +56,8 @@ Click the button below to easily deploy **Dns Music Bot** on Heroku!
 
   - Keep the Bot Running with tmux: `tmux`
 
-To exit the tmux session without stopping the bot, press `Ctrl+b`, then d.
+To exit the tmux session without stopping the bot, press `Ctrl+b`, then `d`.
    
-
-9. **Detach from tmux session**
-   Press `Ctrl+b`, then `d` to exit the tmux session without stopping the bot.
-
-___
 
 # 🎶 Dns Music Configurations
 
