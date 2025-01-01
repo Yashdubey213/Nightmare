@@ -47,21 +47,16 @@ Click the button below to easily deploy **Dns Music Bot** on Heroku!
    git clone https://github.com/MISH0009/DNS && cd DNS
    ```
 
-5. **Run the setup**
-   ```bash
-   bash setup
-   ```
+5. **fill all variable**
 
 6. **Install tmux**
    To keep your bot running after you close the terminal:
-   ```bash
-   sudo apt install tmux && tmux
+   ```tmux 
    ```
 
 7. **Run the Bot**
    ```bash
-   python3 -m DnsXMusic
-   ```
+   start ```
 
 8. **Detach from tmux session**
    Press `Ctrl+b`, then `d` to exit the tmux session without stopping the bot.
