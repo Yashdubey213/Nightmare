@@ -35,8 +35,13 @@ Click the button below to easily deploy **Dns Music Bot** on Heroku!
 2. **Basic commmands for any vps**
    ```bash
    sudo apt update && sudo apt upgrade -y && sudo apt install -y ffmpeg git python3-pip python3-venv tmux nano
-   ```   
-
+   ```
+   ```bash
+   python3 -m venv .venv
+   ```
+   ```bash
+   source .venv/bin/activate
+   ```
 4. **Clone the Repository**
    ```bash
    git clone https://github.com/MISH0009/DNS && cd DNS
