@@ -45,18 +45,18 @@ Click the button below to easily deploy **Dns Music Bot** on Heroku!
 
   - Copy and Edit Environment Variables:
 
-    Copy the sample environment file: `cp sample.env .env
+    Copy the sample environment file: `cp sample.env .env`
 
-    Edit the variables in the .env file: nano .env
+    Edit the variables in the .env file: `nano .env`
 
-  After editing, press Ctrl+X, then Y, and press Enter to save the changes.
+  After editing, press `Ctrl+X`, then `Y`, and press Enter to save the changes.
 
 
-  -  Run the Bot: bash start
+  -  Run the Bot: `bash start`
 
-  - Keep the Bot Running with tmux: tmux
+  - Keep the Bot Running with tmux: `tmux`
 
-To exit the tmux session without stopping the bot, press Ctrl+b, then d.
+To exit the tmux session without stopping the bot, press `Ctrl+b`, then d.
    
 
 9. **Detach from tmux session**
