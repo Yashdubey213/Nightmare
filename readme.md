@@ -33,19 +33,19 @@ Click the button below to easily deploy **Dns Music Bot** on Heroku!
    Download the [Necessary Variables](https://github.com/MISH0009/DNS/blob/master/sample.env) for your setup.
 
 2. **Basic commmands for any vps**
-- Update and Install Dependencies: sudo apt update && sudo apt upgrade -y && sudo apt install -y ffmpeg git python3-pip python3-venv tmux nano
+- Update and Install Dependencies: `sudo apt update && sudo apt upgrade -y && sudo apt install -y ffmpeg git python3-pip python3-venv tmux nano`
 
-  - Create the Virtual Environment: python3 -m venv .venv
+  - Create the Virtual Environment: `python3 -m venv .venv`
 
-  - Activate Virtual Env: source .venv/bin/activate
+  - Activate Virtual Env: `source .venv/bin/activate`
 
-  - Clone the Repository: git clone https://github.com/MISH0009/DNS && cd DNS
+  - Clone the Repository: `git clone https://github.com/MISH0009/DNS` && `cd DNS`
 
-  - Install Python Requirements: pip install -r requirements.txt
+  - Install Python Requirements: `pip install -r requirements.txt`
 
   - Copy and Edit Environment Variables:
 
-    Copy the sample environment file: cp sample.env .env
+    Copy the sample environment file: `cp sample.env .env
 
     Edit the variables in the .env file: nano .env
 
