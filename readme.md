@@ -1,4 +1,4 @@
-<img src="https://envs.sh/wy7.jpg" align="right" width="200" height="200"/>
+<img src="https://graph.org/file/dca01b3fab154da2121b0-4509320fb07bc55b21.jpg" align="right" width="200" height="200"/>
 
 #Dns Music <img src="https://img.shields.io/github/v/release/TeamDns/DnsXMusicBot?color=black&logo=github&logoColor=black&style=social" alt="RELEASE">
 
