@@ -1,5 +1,7 @@
 <img src="https://graph.org/file/dca01b3fab154da2121b0-4509320fb07bc55b21.jpg" align="right" width="200" height="200"/>
 
+## DnsMusic <img src="https://img.shields.io/github/v/release/MISH0009/DNS?color=black&logo=github&logoColor=black&style=social" alt="RELEASE">
+
 
 [Dns Music](https://github.com/TeamDns/DnsXMusicBot) is a powerful Telegram Music + Video Bot written in Python, using Pyrogram and Py-Tgcalls. You can stream songs, videos, and even live streams in your group calls from multiple sources.
 
