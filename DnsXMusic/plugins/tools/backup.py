@@ -13,31 +13,27 @@ from config import BANNED_USERS, MONGO_DB_URI as DB_URI, OWNER_ID
 from DnsXMusic import app
 from DnsXMusic.core.mongo import DB_NAME
 
-MONGO_DB_URI = DB_URI 
-
+MONGO_DB_URI = DB_URI
 
 class CustomJSONEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, ObjectId):
-            return str(obj)  # Convert ObjectId to string
+            return str(obj)
         if isinstance(obj, datetime):
-            return obj.isoformat()  # Convert datetime to ISO 8601 format
+            return obj.isoformat()
         return super().default(obj)
 
 
 async def ex_port(db, db_name):
     data = {}
     collections = await db.list_collection_names()
-
     for collection_name in collections:
         collection = db[collection_name]
         documents = await collection.find().to_list(length=None)
         data[collection_name] = documents
-
     file_path = os.path.join("cache", f"{db_name}_backup.txt")
     with open(file_path, "w") as backup_file:
         json.dump(data, backup_file, indent=4, cls=CustomJSONEncoder)
-
     return file_path
 
 
@@ -69,20 +65,16 @@ async def export_database(client, message):
     mystic = await message.reply_text("Exporting Your mongodatabase...")
     _mongo_async_ = AsyncIOMotorClient(MONGO_DB_URI)
     databases = await _mongo_async_.list_database_names()
-
     for db_name in databases:
         if db_name in ["local", "admin", DB_NAME]:
             continue
-
         db = _mongo_async_[db_name]
         mystic = await edit_or_reply(
             mystic,
             f"Found Data of {db_name} Database. **Uploading** and **Deleting**...",
         )
-
         file_path = await ex_port(db, db_name)
         try:
-
             await app.send_document(
                 message.chat.id, file_path, caption=f"MᴏɴɢᴏDB ʙᴀᴄᴋᴜᴘ ᴅᴀᴛᴀ ғᴏʀ {db_name}"
             )
@@ -99,7 +91,6 @@ async def export_database(client, message):
             os.remove(file_path)
         except Exception:
             pass
-
     db = _mongo_async_[DB_NAME]
     mystic = await edit_or_reply(mystic, f"Please Wait...\nExporting data of Bot")
 
@@ -119,7 +110,6 @@ async def export_database(client, message):
         )
     except FloodWait as e:
         await asyncio.sleep(e.value)
-
     await mystic.delete()
 
 
@@ -131,12 +121,10 @@ async def import_database(client, message):
         return await message.reply_text(
             "**Due to some privacy Issue, You can't Import/Export when you are using Yukki Database\n\n Please Fill Your MONGO_DB_URI in vars to use this features**"
         )
-
     if not message.reply_to_message or not message.reply_to_message.document:
         return await message.reply_text(
             "You need to reply an exported file to import it."
         )
-
     mystic = await message.reply_text("Downloading...")
 
     async def progress(current, total):
@@ -146,7 +134,6 @@ async def import_database(client, message):
             await asyncio.sleep(w.value)
 
     file_path = await message.reply_to_message.download(progress=progress)
-
     try:
         with open(file_path, "r") as backup_file:
             data = json.load(backup_file)
@@ -154,15 +141,12 @@ async def import_database(client, message):
         return await edit_or_reply(
             mystic, "Invalid Data Format Please Provide A Valid Exported File"
         )
-
     if not isinstance(data, dict):
         return await edit_or_reply(
             mystic, "Invalid Data Format Please Provide A Valid Exported File"
         )
-
     _mongo_async_ = AsyncIOMotorClient(MONGO_DB_URI)
     db = _mongo_async_[DB_NAME]
-
     try:
         for collection_name, documents in data.items():
             if documents:
@@ -170,15 +154,13 @@ async def import_database(client, message):
                     mystic, f"Importing...\nCollection {collection_name}."
                 )
                 collection = db[collection_name]
-
                 for document in documents:
-                    await collection.replace_one(
-                        {"_id": document["_id"]}, document, upsert=True
-                    )
-
+                    existing = await collection.find_one({"_id": document["_id"]})
+                    if not existing:
+                        await collection.insert_one(document)
         await edit_or_reply(mystic, "Data successfully imported from replied file")
     except Exception as e:
         await edit_or_reply(mystic, f"Error during import {e}\nRolling back changes")
-
     if os.path.exists(file_path):
         os.remove(file_path)
+    
