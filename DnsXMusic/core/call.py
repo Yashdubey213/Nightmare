@@ -609,7 +609,7 @@ class Call(PyTgCalls):
             filters.call_participant(GroupCallParticipant.Action.UPDATED)
         )
         async def participants_change_handler(client, update: Update):
-            if update.action not in (GroupCallParticipant.Action.JOINED, GroupCallParticipant.Action.LEFT):
+            if update.participant.action not in (GroupCallParticipant.Action.JOINED, GroupCallParticipant.Action.LEFT):
 
                 return
             chat_id = update.chat_id
@@ -627,7 +627,7 @@ class Call(PyTgCalls):
             else:
                 final = (
                     users + 1
-                    if isinstance(update, GroupCallParticipant.Action.JOINED)
+                    if isinstance(update.participant.action, GroupCallParticipant.Action.JOINED)
                     else users - 1
                 )
                 counter[chat_id] = final
