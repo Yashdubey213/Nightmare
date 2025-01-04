@@ -118,14 +118,15 @@ async def export_database(client, message):
 async def import_database(client, message):
     if message.from_user.id not in OWNER_ID:
         return
+    mystic = await message.reply_text("Please wait....")
     if MONGO_DB_URI is None:
         return await edit_or_reply(
-            message,
+            mystic,
             "**Due to some privacy Issue, You can't Import/Export when you are using Yukki Database\n\nPlease Fill Your MONGO_DB_URI in vars to use this feature**"
         )
     if not message.reply_to_message or not message.reply_to_message.document:
         return await edit_or_reply(
-            message, "You need to reply to an exported file to import it."
+            mystic, "You need to reply to an exported file to import it."
         )
 
     mystic = await edit_or_reply(message, "Downloading...")
