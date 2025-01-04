@@ -124,7 +124,7 @@ async def import_database(client, message):
         )
     if not message.reply_to_message or not message.reply_to_message.document:
         return await message.reply_text(
-            "You need to reply an exported file to import it."
+            "You need to reply to an exported file to import it."
         )
     mystic = await message.reply_text("Downloading...")
 
@@ -139,29 +139,37 @@ async def import_database(client, message):
         with open(file_path, "r") as backup_file:
             data = json.load(backup_file)
     except (json.JSONDecodeError, IOError):
-        return await edit_or_reply(
-            mystic, "Invalid Data Format Please Provide A Valid Exported File"
+        return await mystic.edit_text(
+            "Invalid Data Format. Please provide a valid exported file."
         )
     if not isinstance(data, dict):
-        return await edit_or_reply(
-            mystic, "Invalid Data Format Please Provide A Valid Exported File"
+        return await mystic.edit_text(
+            "Invalid Data Format. Please provide a valid exported file."
         )
+
     _mongo_async_ = AsyncIOMotorClient(MONGO_DB_URI)
     db = _mongo_async_[DB_NAME]
     try:
         for collection_name, documents in data.items():
-            if documents:
-                mystic = await edit_or_reply(
-                    mystic, f"Importing...\nCollection {collection_name}."
-                )
-                collection = db[collection_name]
-                for document in documents:
-                    existing = await collection.find_one({"_id": document["_id"]})
-                    if not existing:
-                        await collection.insert_one(document)
-        await edit_or_reply(mystic, "Data successfully imported from replied file")
+            if not documents:
+                continue
+
+            mystic = await mystic.edit_text(
+                f"Importing...\nCollection: {collection_name}."
+            )
+            collection = db[collection_name]
+
+            async def import_document(document):
+                existing = await collection.find_one({"_id": document["_id"]})
+                if not existing:
+                    await collection.insert_one(document)
+
+            tasks = [import_document(doc) for doc in documents]
+            await asyncio.gather(*tasks)
+
+        await mystic.edit_text("Data successfully imported from the replied file.")
     except Exception as e:
-        await edit_or_reply(mystic, f"Error during import {e}\nRolling back changes")
-    if os.path.exists(file_path):
-        os.remove(file_path)
-    
+        await mystic.edit_text(f"Error during import: {e}\nRolling back changes.")
+    finally:
+        if os.path.exists(file_path):
+            os.remove(file_path)
