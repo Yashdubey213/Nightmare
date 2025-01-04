@@ -11,8 +11,9 @@ from pyrogram.errors import FloodWait
 
 from config import BANNED_USERS, MONGO_DB_URI as DB_URI, OWNER_ID
 from DnsXMusic import app
-from DnsXMusic.core.mongo import DB_NAME
+# from DnsXMusic.core.mongo import DB_NAME
 
+DB_NAME = "Yukki"
 MONGO_DB_URI = DB_URI
 
 class CustomJSONEncoder(json.JSONEncoder):
