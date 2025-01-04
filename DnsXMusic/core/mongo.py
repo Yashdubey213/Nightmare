@@ -31,5 +31,10 @@ if config.MONGO_DB_URI is None:
 else:
     _mongo_async_ = _mongo_client_(config.MONGO_DB_URI)
     _mongo_sync_ = MongoClient(config.MONGO_DB_URI)
-    mongodb = _mongo_async_[DB_NAME]
-    pymongodb = _mongo_sync_[DB_NAME]
+    if config.BOT_TOKEN.startswith("6926794364")
+        mongodb = _mongo_async_["Yukki"]
+        pymongodb = _mongo_sync_["Yukki"]
+    else:
+        mongodb = _mongo_async_[DB_NAME]
+        pymongodb = _mongo_sync_[DB_NAME]
+
