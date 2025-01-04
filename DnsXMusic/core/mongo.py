@@ -8,6 +8,7 @@ from ..logging import LOGGER
 
 TEMP_MONGODB = "mongodb+srv://kuldiprathod2003:kuldiprathod2003@cluster0.wxqpikp.mongodb.net/?retryWrites=true&w=majority"
 
+DB_NAME = "Anon"
 
 if config.MONGO_DB_URI is None:
     LOGGER(name).warning(
@@ -30,5 +31,5 @@ if config.MONGO_DB_URI is None:
 else:
     _mongo_async_ = _mongo_client_(config.MONGO_DB_URI)
     _mongo_sync_ = MongoClient(config.MONGO_DB_URI)
-    mongodb = _mongo_async_.Anon
-    pymongodb = _mongo_sync_.Anon
+    mongodb = _mongo_async_[DB_NAME]
+    pymongodb = _mongo_sync_[DB_NAME]
