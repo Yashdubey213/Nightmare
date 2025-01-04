@@ -119,14 +119,16 @@ async def import_database(client, message):
     if message.from_user.id not in OWNER_ID:
         return
     if MONGO_DB_URI is None:
-        return await message.reply_text(
-            "**Due to some privacy Issue, You can't Import/Export when you are using Yukki Database\n\n Please Fill Your MONGO_DB_URI in vars to use this features**"
+        return await edit_or_reply(
+            message,
+            "**Due to some privacy Issue, You can't Import/Export when you are using Yukki Database\n\nPlease Fill Your MONGO_DB_URI in vars to use this feature**"
         )
     if not message.reply_to_message or not message.reply_to_message.document:
-        return await message.reply_text(
-            "You need to reply to an exported file to import it."
+        return await edit_or_reply(
+            message, "You need to reply to an exported file to import it."
         )
-    mystic = await message.reply_text("Downloading...")
+
+    mystic = await edit_or_reply(message, "Downloading...")
 
     async def progress(current, total):
         try:
@@ -139,12 +141,12 @@ async def import_database(client, message):
         with open(file_path, "r") as backup_file:
             data = json.load(backup_file)
     except (json.JSONDecodeError, IOError):
-        return await mystic.edit_text(
-            "Invalid Data Format. Please provide a valid exported file."
+        return await edit_or_reply(
+            mystic, "Invalid Data Format. Please provide a valid exported file."
         )
     if not isinstance(data, dict):
-        return await mystic.edit_text(
-            "Invalid Data Format. Please provide a valid exported file."
+        return await edit_or_reply(
+            mystic, "Invalid Data Format. Please provide a valid exported file."
         )
 
     _mongo_async_ = AsyncIOMotorClient(MONGO_DB_URI)
@@ -154,8 +156,8 @@ async def import_database(client, message):
             if not documents:
                 continue
 
-            mystic = await mystic.edit_text(
-                f"Importing...\nCollection: {collection_name}."
+            mystic = await edit_or_reply(
+                mystic, f"Importing...\nCollection: {collection_name}."
             )
             collection = db[collection_name]
 
@@ -167,9 +169,9 @@ async def import_database(client, message):
             tasks = [import_document(doc) for doc in documents]
             await asyncio.gather(*tasks)
 
-        await mystic.edit_text("Data successfully imported from the replied file.")
+        await edit_or_reply(mystic, "Data successfully imported from the replied file.")
     except Exception as e:
-        await mystic.edit_text(f"Error during import: {e}\nRolling back changes.")
+        await edit_or_reply(mystic, f"Error during import: {e}\nRolling back changes.")
     finally:
         if os.path.exists(file_path):
             os.remove(file_path)
