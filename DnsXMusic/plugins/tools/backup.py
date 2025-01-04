@@ -129,7 +129,7 @@ async def import_database(client, message):
             mystic, "You need to reply to an exported file to import it."
         )
 
-    mystic = await edit_or_reply(message, "Downloading...")
+    mystic = await edit_or_reply(mystic, "Downloading...")
 
     async def progress(current, total):
         try:
